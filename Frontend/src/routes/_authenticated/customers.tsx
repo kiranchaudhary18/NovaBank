@@ -2,6 +2,14 @@ import { createFileRoute } from "@tanstack/react-router";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
 import { UserSquare2, Search, Plus } from "lucide-react";
+import { useState } from "react";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import {
   Table,
   TableBody,
@@ -16,9 +24,31 @@ export const Route = createFileRoute("/_authenticated/customers")({
   component: CustomersPage,
 });
 
-const customers: any[] = [];
-
 function CustomersPage() {
+  const [customers, setCustomers] = useState<any[]>([]);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [plan, setPlan] = useState("");
+
+  const handleAdd = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!name || !email) return;
+    const newCustomer = {
+      id: Math.random().toString(36).substr(2, 9),
+      name,
+      email,
+      plan: plan || "Basic",
+      status: "Active",
+      ltv: Math.floor(Math.random() * 1000)
+    };
+    setCustomers([newCustomer, ...customers]);
+    setIsDialogOpen(false);
+    toast.success("Customer added successfully!");
+    setName("");
+    setEmail("");
+    setPlan("");
+  };
   return (
     <div className="p-6 lg:p-8 max-w-7xl mx-auto space-y-8">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
@@ -49,10 +79,59 @@ function CustomersPage() {
               className="w-64 bg-white/5 border border-white/10 rounded-xl pl-10 pr-4 py-2 text-sm text-white placeholder:text-muted-foreground focus:outline-none focus:border-primary/50 transition-colors"
             />
           </div>
-          <button onClick={() => toast.info('Feature Coming Soon', { description: 'This module is currently in development.' })}  className="flex items-center gap-2 rounded-xl bg-gradient-primary px-4 py-2 text-sm font-semibold text-white shadow-glow hover:opacity-95 transition-opacity">
-            <Plus className="w-4 h-4" />
-            Add Customer
-          </button>
+          <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+            <DialogTrigger asChild>
+              <button className="flex items-center gap-2 rounded-xl bg-gradient-primary px-4 py-2 text-sm font-semibold text-white shadow-glow hover:opacity-95 transition-opacity">
+                <Plus className="w-4 h-4" />
+                Add Customer
+              </button>
+            </DialogTrigger>
+            <DialogContent className="glass border-white/10 text-white sm:max-w-md">
+              <DialogHeader>
+                <DialogTitle>Add Customer</DialogTitle>
+              </DialogHeader>
+              <form onSubmit={handleAdd} className="space-y-4 pt-4">
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-white/70">Full Name</label>
+                  <input 
+                    type="text" 
+                    value={name} 
+                    onChange={(e) => setName(e.target.value)}
+                    className="w-full rounded-lg bg-white/5 border border-white/10 px-3 py-2 text-white outline-none focus:border-primary/50 transition-colors" 
+                    placeholder="Enter customer name" 
+                    required
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-white/70">Email Address</label>
+                  <input 
+                    type="email" 
+                    value={email} 
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="w-full rounded-lg bg-white/5 border border-white/10 px-3 py-2 text-white outline-none focus:border-primary/50 transition-colors" 
+                    placeholder="name@company.com" 
+                    required
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-white/70">Plan</label>
+                  <select 
+                    value={plan} 
+                    onChange={(e) => setPlan(e.target.value)}
+                    className="w-full rounded-lg bg-white/5 border border-white/10 px-3 py-2 text-white outline-none focus:border-primary/50 transition-colors"
+                  >
+                    <option value="" className="bg-[#060816]">Select Plan</option>
+                    <option value="Basic" className="bg-[#060816]">Basic</option>
+                    <option value="Pro" className="bg-[#060816]">Pro</option>
+                    <option value="Enterprise" className="bg-[#060816]">Enterprise</option>
+                  </select>
+                </div>
+                <button type="submit" className="w-full rounded-lg bg-gradient-primary py-2.5 font-semibold text-white hover:opacity-95 transition-opacity">
+                  Add Customer
+                </button>
+              </form>
+            </DialogContent>
+          </Dialog>
         </motion.div>
       </div>
 

@@ -2,6 +2,14 @@ import { createFileRoute } from "@tanstack/react-router";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
 import { Receipt, Download, Filter } from "lucide-react";
+import { useState } from "react";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { useQuery } from "@tanstack/react-query";
 import { AccountService } from "@/lib/api/services/account.service";
 import { TransactionService } from "@/lib/api/services/transaction.service";
@@ -33,7 +41,32 @@ function PaymentsPage() {
     enabled: !!primaryAccount,
   });
 
-  const payments = transactions.filter((t) => t.type === "DEBIT");
+  const [localPayments, setLocalPayments] = useState<any[]>([]);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [vendor, setVendor] = useState("");
+  const [category, setCategory] = useState("");
+  const [amount, setAmount] = useState("");
+
+  const handlePay = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!vendor || !amount) return;
+    const newPayment = {
+      id: Math.random().toString(36).substr(2, 9),
+      merchant: vendor,
+      category: category || "Business Services",
+      createdAt: new Date().toISOString(),
+      amount: parseFloat(amount),
+      type: "DEBIT"
+    };
+    setLocalPayments([newPayment, ...localPayments]);
+    setIsDialogOpen(false);
+    toast.success("Bill payment scheduled successfully!");
+    setVendor("");
+    setCategory("");
+    setAmount("");
+  };
+
+  const payments = [...localPayments, ...transactions.filter((t) => t.type === "DEBIT")];
 
   return (
     <div className="p-6 lg:p-8 max-w-7xl mx-auto space-y-8">
@@ -61,10 +94,57 @@ function PaymentsPage() {
             <Filter className="w-4 h-4" />
             Filter
           </button>
-          <button onClick={() => toast.info('Feature Coming Soon', { description: 'This module is currently in development.' })}  className="flex items-center gap-2 rounded-xl bg-gradient-primary px-4 py-2 text-sm font-semibold text-white shadow-glow hover:opacity-95 transition-opacity">
-            <Receipt className="w-4 h-4" />
-            Pay Bill
-          </button>
+          <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+            <DialogTrigger asChild>
+              <button className="flex items-center gap-2 rounded-xl bg-gradient-primary px-4 py-2 text-sm font-semibold text-white shadow-glow hover:opacity-95 transition-opacity">
+                <Receipt className="w-4 h-4" />
+                Pay Bill
+              </button>
+            </DialogTrigger>
+            <DialogContent className="glass border-white/10 text-white sm:max-w-md">
+              <DialogHeader>
+                <DialogTitle>Pay Bill</DialogTitle>
+              </DialogHeader>
+              <form onSubmit={handlePay} className="space-y-4 pt-4">
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-white/70">Vendor Name</label>
+                  <input 
+                    type="text" 
+                    value={vendor} 
+                    onChange={(e) => setVendor(e.target.value)}
+                    className="w-full rounded-lg bg-white/5 border border-white/10 px-3 py-2 text-white outline-none focus:border-primary/50 transition-colors" 
+                    placeholder="Enter vendor name" 
+                    required
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-white/70">Category</label>
+                  <input 
+                    type="text" 
+                    value={category} 
+                    onChange={(e) => setCategory(e.target.value)}
+                    className="w-full rounded-lg bg-white/5 border border-white/10 px-3 py-2 text-white outline-none focus:border-primary/50 transition-colors" 
+                    placeholder="e.g. Software, Utilities" 
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-white/70">Amount (USD)</label>
+                  <input 
+                    type="number" 
+                    value={amount} 
+                    onChange={(e) => setAmount(e.target.value)}
+                    className="w-full rounded-lg bg-white/5 border border-white/10 px-3 py-2 text-white outline-none focus:border-primary/50 transition-colors" 
+                    placeholder="Enter amount" 
+                    min="1"
+                    required
+                  />
+                </div>
+                <button type="submit" className="w-full rounded-lg bg-gradient-primary py-2.5 font-semibold text-white hover:opacity-95 transition-opacity">
+                  Schedule Payment
+                </button>
+              </form>
+            </DialogContent>
+          </Dialog>
         </motion.div>
       </div>
 

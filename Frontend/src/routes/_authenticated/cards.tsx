@@ -2,6 +2,14 @@ import { createFileRoute } from "@tanstack/react-router";
 import { toast } from "sonner";
 import { motion, useMotionValue, useTransform, useSpring } from "framer-motion";
 import { useQuery } from "@tanstack/react-query";
+import { useState } from "react";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { AccountService } from "@/lib/api/services/account.service";
 import { CardService } from "@/lib/api/services/card.service";
 import { CreditCard, Snowflake, Lock, Settings, EyeOff } from "lucide-react";
@@ -24,6 +32,36 @@ function CardsPage() {
     enabled: !!primaryAccount,
   });
 
+  const [localCards, setLocalCards] = useState<any[]>([]);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [cardType, setCardType] = useState("Virtual");
+  const [cardName, setCardName] = useState("");
+
+  const handleIssue = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!cardName) return;
+    const colors = ["bg-gradient-to-br from-indigo-500 to-purple-600", "bg-gradient-to-br from-blue-500 to-cyan-500", "bg-gradient-to-br from-rose-500 to-orange-500"];
+    const randomColor = colors[Math.floor(Math.random() * colors.length)];
+    const newCard = {
+      id: Math.random().toString(36).substr(2, 9),
+      type: cardType,
+      status: "Active",
+      last4: Math.floor(1000 + Math.random() * 9000).toString(),
+      expiry: "12/28",
+      cardholder: cardName,
+      color: randomColor,
+      spent: 0,
+      limit: cardType === "Virtual" ? 5000 : 25000,
+    };
+    setLocalCards([newCard, ...localCards]);
+    setIsDialogOpen(false);
+    toast.success(`${cardType} card issued successfully!`);
+    setCardName("");
+    setCardType("Virtual");
+  };
+
+  const allCards = [...localCards, ...cards];
+
   return (
     <div className="p-6 lg:p-8 max-w-7xl mx-auto space-y-8">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-12">
@@ -45,9 +83,45 @@ function CardsPage() {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.4, delay: 0.1 }}
         >
-          <button onClick={() => toast.info('Feature Coming Soon', { description: 'This module is currently in development.' })}  className="rounded-xl bg-gradient-primary px-4 py-2 text-sm font-semibold text-white shadow-glow hover:opacity-95 transition-opacity">
-            + Issue New Card
-          </button>
+          <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+            <DialogTrigger asChild>
+              <button className="rounded-xl bg-gradient-primary px-4 py-2 text-sm font-semibold text-white shadow-glow hover:opacity-95 transition-opacity">
+                + Issue New Card
+              </button>
+            </DialogTrigger>
+            <DialogContent className="glass border-white/10 text-white sm:max-w-md">
+              <DialogHeader>
+                <DialogTitle>Issue New Card</DialogTitle>
+              </DialogHeader>
+              <form onSubmit={handleIssue} className="space-y-4 pt-4">
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-white/70">Cardholder Name</label>
+                  <input 
+                    type="text" 
+                    value={cardName} 
+                    onChange={(e) => setCardName(e.target.value)}
+                    className="w-full rounded-lg bg-white/5 border border-white/10 px-3 py-2 text-white outline-none focus:border-primary/50 transition-colors" 
+                    placeholder="Enter name on card" 
+                    required
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-white/70">Card Type</label>
+                  <select 
+                    value={cardType} 
+                    onChange={(e) => setCardType(e.target.value)}
+                    className="w-full rounded-lg bg-white/5 border border-white/10 px-3 py-2 text-white outline-none focus:border-primary/50 transition-colors"
+                  >
+                    <option value="Virtual" className="bg-[#060816]">Virtual Card (Instant)</option>
+                    <option value="Physical" className="bg-[#060816]">Physical Card (Mail)</option>
+                  </select>
+                </div>
+                <button type="submit" className="w-full rounded-lg bg-gradient-primary py-2.5 font-semibold text-white hover:opacity-95 transition-opacity">
+                  Issue Card
+                </button>
+              </form>
+            </DialogContent>
+          </Dialog>
         </motion.div>
       </div>
 
@@ -57,7 +131,7 @@ function CardsPage() {
         </div>
       ) : (
         <div className="grid lg:grid-cols-2 gap-12">
-          {cards.map((card: any, idx: number) => (
+          {allCards.map((card: any, idx: number) => (
             <CardComponent key={card.id} card={card} delay={idx * 0.2} />
           ))}
         </div>

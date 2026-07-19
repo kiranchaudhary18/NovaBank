@@ -2,12 +2,42 @@ import { createFileRoute } from "@tanstack/react-router";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
 import { Landmark, ArrowRight, Clock, ShieldCheck, Briefcase } from "lucide-react";
+import { useState } from "react";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
 export const Route = createFileRoute("/_authenticated/loans")({
   component: LoansPage,
 });
 
 function LoansPage() {
+  const [loans, setLoans] = useState<{ id: string; purpose: string; amount: string; status: string; date: string }[]>([]);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [amount, setAmount] = useState("");
+  const [purpose, setPurpose] = useState("");
+
+  const handleApply = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!amount || !purpose) return;
+    const newLoan = {
+      id: Math.random().toString(36).substr(2, 9),
+      purpose,
+      amount: "$" + parseFloat(amount).toLocaleString(),
+      status: "Pending Approval",
+      date: new Date().toLocaleDateString("en-US", { month: "short", day: "numeric" }),
+    };
+    setLoans([...loans, newLoan]);
+    setIsDialogOpen(false);
+    toast.success("Loan application submitted successfully!");
+    setAmount("");
+    setPurpose("");
+  };
+
   return (
     <div className="p-6 lg:p-8 max-w-7xl mx-auto space-y-8">
       <motion.div
@@ -27,14 +57,52 @@ function LoansPage() {
         <div className="w-16 h-16 rounded-full bg-white/5 flex items-center justify-center mb-4">
           <Briefcase className="w-8 h-8 text-muted-foreground" />
         </div>
-        <h3 className="text-xl font-semibold text-white mb-2">No active loans</h3>
+        <h3 className="text-xl font-semibold text-white mb-2">No active corporate loans</h3>
         <p className="text-muted-foreground max-w-sm mb-6">
-          You currently don't have any active loans or financing. 
-          Grow your business with our tailored financial products.
+          Grow your business with our tailored financial products. Apply now to get started.
         </p>
-        <button onClick={() => toast.info('Feature Coming Soon', { description: 'This module is currently in development.' })}  className="flex items-center gap-2 rounded-xl bg-gradient-primary px-6 py-2.5 text-sm font-semibold text-white shadow-glow hover:opacity-95 transition-opacity">
-          Apply for a Loan
-        </button>
+        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+          <DialogTrigger asChild>
+            <button className="flex items-center gap-2 rounded-xl bg-gradient-primary px-6 py-2.5 text-sm font-semibold text-white shadow-glow hover:opacity-95 transition-opacity">
+              Apply for a Loan
+            </button>
+          </DialogTrigger>
+          <DialogContent className="glass border-white/10 text-white sm:max-w-md">
+            <DialogHeader>
+              <DialogTitle>Loan Application</DialogTitle>
+            </DialogHeader>
+            <form onSubmit={handleApply} className="space-y-4 pt-4">
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-white/70">Loan Purpose</label>
+                <select 
+                  value={purpose} 
+                  onChange={(e) => setPurpose(e.target.value)}
+                  className="w-full rounded-lg bg-white/5 border border-white/10 px-3 py-2 text-white outline-none focus:border-primary/50 transition-colors"
+                >
+                  <option value="" className="bg-[#060816]">Select Purpose</option>
+                  <option value="Working Capital" className="bg-[#060816]">Working Capital</option>
+                  <option value="Equipment Financing" className="bg-[#060816]">Equipment Financing</option>
+                  <option value="Commercial Real Estate" className="bg-[#060816]">Commercial Real Estate</option>
+                  <option value="Business Expansion" className="bg-[#060816]">Business Expansion</option>
+                </select>
+              </div>
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-white/70">Requested Amount (USD)</label>
+                <input 
+                  type="number" 
+                  value={amount} 
+                  onChange={(e) => setAmount(e.target.value)}
+                  className="w-full rounded-lg bg-white/5 border border-white/10 px-3 py-2 text-white outline-none focus:border-primary/50 transition-colors" 
+                  placeholder="Enter amount" 
+                  min="5000"
+                />
+              </div>
+              <button type="submit" className="w-full rounded-lg bg-gradient-primary py-2.5 font-semibold text-white hover:opacity-95 transition-opacity">
+                Submit Application
+              </button>
+            </form>
+          </DialogContent>
+        </Dialog>
       </div>
 
       <div className="grid lg:grid-cols-3 gap-6">
@@ -75,26 +143,43 @@ function LoansPage() {
           className="space-y-6"
         >
           <div className="rounded-3xl border glass p-6">
-            <h4 className="font-semibold text-white mb-4">Active Loans</h4>
-
-            <div className="p-4 rounded-xl bg-white/5 border border-white/10">
-              <div className="flex justify-between items-start mb-2">
-                <div>
-                  <h5 className="font-medium text-white">Equipment Financing</h5>
-                  <p className="text-xs text-muted-foreground">Term Loan • 4.5% APR</p>
+            <h4 className="font-semibold text-white mb-4">Your Loans</h4>
+            
+            <div className="space-y-4">
+              <div className="p-4 rounded-xl bg-white/5 border border-white/10">
+                <div className="flex justify-between items-start mb-2">
+                  <div>
+                    <h5 className="font-medium text-white">Equipment Financing</h5>
+                    <p className="text-xs text-muted-foreground">Term Loan • 4.5% APR</p>
+                  </div>
+                  <div className="text-right">
+                    <p className="font-semibold text-white">$45,200</p>
+                    <p className="text-xs text-green-400">Active</p>
+                  </div>
                 </div>
-                <div className="text-right">
-                  <p className="font-semibold text-white">$45,200</p>
-                  <p className="text-xs text-muted-foreground">Remaining</p>
+
+                <div className="mt-4 pt-4 border-t border-white/10 flex items-center justify-between text-sm">
+                  <span className="flex items-center gap-1.5 text-muted-foreground">
+                    <Clock className="w-4 h-4" /> Next EMI: Aug 15
+                  </span>
+                  <span className="font-medium text-white">$1,250</span>
                 </div>
               </div>
 
-              <div className="mt-4 pt-4 border-t border-white/10 flex items-center justify-between text-sm">
-                <span className="flex items-center gap-1.5 text-muted-foreground">
-                  <Clock className="w-4 h-4" /> Next EMI: Aug 15
-                </span>
-                <span className="font-medium text-white">$1,250</span>
-              </div>
+              {loans.map(loan => (
+                <div key={loan.id} className="p-4 rounded-xl bg-white/5 border border-white/10">
+                  <div className="flex justify-between items-start mb-2">
+                    <div>
+                      <h5 className="font-medium text-white">{loan.purpose}</h5>
+                      <p className="text-xs text-muted-foreground">Application • {loan.date}</p>
+                    </div>
+                    <div className="text-right">
+                      <p className="font-semibold text-white">{loan.amount}</p>
+                      <p className="text-xs text-yellow-400">{loan.status}</p>
+                    </div>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
 
