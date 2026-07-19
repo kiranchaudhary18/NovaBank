@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { toast } from "sonner";
 import { motion } from "framer-motion";
 import { useQuery } from "@tanstack/react-query";
 import { NotificationService } from "@/lib/api/services/notification.service";
@@ -37,7 +38,7 @@ function NotificationsPage() {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.4, delay: 0.1 }}
         >
-          <button className="text-sm font-semibold text-primary hover:text-primary-light transition-colors">
+          <button onClick={() => toast.info('Feature Coming Soon', { description: 'This module is currently in development.' })}  className="text-sm font-semibold text-primary hover:text-primary-light transition-colors">
             Mark all as read
           </button>
         </motion.div>

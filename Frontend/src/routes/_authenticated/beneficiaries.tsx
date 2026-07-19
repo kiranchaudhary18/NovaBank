@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { toast } from "sonner";
 import { motion } from "framer-motion";
 import { Search, UserPlus, Star, MoreVertical } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
@@ -46,7 +47,7 @@ function BeneficiariesPage() {
               className="w-64 bg-white/5 border border-white/10 rounded-xl pl-10 pr-4 py-2 text-sm text-white placeholder:text-muted-foreground focus:outline-none focus:border-primary/50 transition-colors"
             />
           </div>
-          <button className="flex items-center gap-2 rounded-xl bg-gradient-primary px-4 py-2 text-sm font-semibold text-white shadow-glow hover:opacity-95 transition-opacity">
+          <button onClick={() => toast.info('Feature Coming Soon', { description: 'This module is currently in development.' })}  className="flex items-center gap-2 rounded-xl bg-gradient-primary px-4 py-2 text-sm font-semibold text-white shadow-glow hover:opacity-95 transition-opacity">
             <UserPlus className="w-4 h-4" />
             Add New
           </button>
@@ -66,7 +67,7 @@ function BeneficiariesPage() {
           <p className="text-muted-foreground max-w-sm mb-6">
             Add a beneficiary to start making quick transfers.
           </p>
-          <button className="flex items-center gap-2 rounded-xl bg-gradient-primary px-6 py-2.5 text-sm font-semibold text-white shadow-glow hover:opacity-95 transition-opacity">
+          <button onClick={() => toast.info('Feature Coming Soon', { description: 'This module is currently in development.' })}  className="flex items-center gap-2 rounded-xl bg-gradient-primary px-6 py-2.5 text-sm font-semibold text-white shadow-glow hover:opacity-95 transition-opacity">
             <UserPlus className="w-4 h-4" />
             Add First Beneficiary
           </button>
@@ -81,7 +82,7 @@ function BeneficiariesPage() {
               transition={{ duration: 0.4, delay: idx * 0.05 }}
               className="group rounded-2xl border glass p-6 hover:bg-white/[0.04] transition-colors relative"
             >
-              <button className="absolute top-4 right-4 text-muted-foreground hover:text-white transition-colors">
+              <button onClick={() => toast.info('Feature Coming Soon', { description: 'This module is currently in development.' })}  className="absolute top-4 right-4 text-muted-foreground hover:text-white transition-colors">
                 <MoreVertical className="w-5 h-5" />
               </button>
 
@@ -104,10 +105,10 @@ function BeneficiariesPage() {
                 </div>
 
                 <div className="w-full pt-4 border-t border-white/10 flex gap-2">
-                  <button className="flex-1 py-2 rounded-lg bg-white/5 text-sm font-medium text-white hover:bg-white/10 transition-colors">
+                  <button onClick={() => toast.info('Feature Coming Soon', { description: 'This module is currently in development.' })}  className="flex-1 py-2 rounded-lg bg-white/5 text-sm font-medium text-white hover:bg-white/10 transition-colors">
                     Details
                   </button>
-                  <button className="flex-1 py-2 rounded-lg bg-primary/10 text-sm font-medium text-primary hover:bg-primary/20 transition-colors">
+                  <button onClick={() => toast.info('Feature Coming Soon', { description: 'This module is currently in development.' })}  className="flex-1 py-2 rounded-lg bg-primary/10 text-sm font-medium text-primary hover:bg-primary/20 transition-colors">
                     Send
                   </button>
                 </div>

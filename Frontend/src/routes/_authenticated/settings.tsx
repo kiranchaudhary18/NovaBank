@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { toast } from "sonner";
 import { motion } from "framer-motion";
 import { useCurrentUser } from "@/lib/api/hooks/use-auth";
 import { User, Bell, Lock, Globe, Key, Trash2 } from "lucide-react";
@@ -76,12 +77,12 @@ function SettingsPage() {
                       <div className="w-24 h-24 rounded-full border border-white/10 bg-primary/20 flex items-center justify-center text-primary text-3xl font-bold">
                         {user?.fullName?.charAt(0).toUpperCase() || "U"}
                       </div>
-                      <button className="absolute bottom-0 right-0 w-8 h-8 rounded-full bg-white/10 border border-white/20 flex items-center justify-center text-white hover:bg-white/20 transition-colors">
+                      <button onClick={() => toast.info('Feature Coming Soon', { description: 'This module is currently in development.' })}  className="absolute bottom-0 right-0 w-8 h-8 rounded-full bg-white/10 border border-white/20 flex items-center justify-center text-white hover:bg-white/20 transition-colors">
                         <User className="w-4 h-4" />
                       </button>
                     </div>
                     <div>
-                      <button className="px-4 py-2 rounded-lg bg-white/5 border border-white/10 text-sm font-medium text-white hover:bg-white/10 transition-colors">
+                      <button onClick={() => toast.info('Feature Coming Soon', { description: 'This module is currently in development.' })}  className="px-4 py-2 rounded-lg bg-white/5 border border-white/10 text-sm font-medium text-white hover:bg-white/10 transition-colors">
                         Change Avatar
                       </button>
                       <p className="text-xs text-muted-foreground mt-2">
@@ -110,7 +111,7 @@ function SettingsPage() {
                   </div>
 
                   <div className="mt-6 flex justify-end">
-                    <button className="px-6 py-2 rounded-xl bg-gradient-primary text-white font-semibold shadow-glow hover:opacity-95 transition-opacity">
+                    <button onClick={() => toast.info('Feature Coming Soon', { description: 'This module is currently in development.' })}  className="px-6 py-2 rounded-xl bg-gradient-primary text-white font-semibold shadow-glow hover:opacity-95 transition-opacity">
                       Save Changes
                     </button>
                   </div>
@@ -124,7 +125,7 @@ function SettingsPage() {
                     Permanently remove your personal account and all of its contents from the
                     NovaBank platform.
                   </p>
-                  <button className="px-4 py-2 rounded-lg bg-red-500/10 border border-red-500/20 text-sm font-medium text-red-400 hover:bg-red-500/20 transition-colors">
+                  <button onClick={() => toast.info('Feature Coming Soon', { description: 'This module is currently in development.' })}  className="px-4 py-2 rounded-lg bg-red-500/10 border border-red-500/20 text-sm font-medium text-red-400 hover:bg-red-500/20 transition-colors">
                     Delete Account
                   </button>
                 </div>

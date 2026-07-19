@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { toast } from "sonner";
 import { motion } from "framer-motion";
 import { Landmark, ArrowRight, Clock, ShieldCheck, Briefcase } from "lucide-react";
 
@@ -31,7 +32,7 @@ function LoansPage() {
           You currently don't have any active loans or financing. 
           Grow your business with our tailored financial products.
         </p>
-        <button className="flex items-center gap-2 rounded-xl bg-gradient-primary px-6 py-2.5 text-sm font-semibold text-white shadow-glow hover:opacity-95 transition-opacity">
+        <button onClick={() => toast.info('Feature Coming Soon', { description: 'This module is currently in development.' })}  className="flex items-center gap-2 rounded-xl bg-gradient-primary px-6 py-2.5 text-sm font-semibold text-white shadow-glow hover:opacity-95 transition-opacity">
           Apply for a Loan
         </button>
       </div>
@@ -60,7 +61,7 @@ function LoansPage() {
             </p>
 
             <div className="flex items-center gap-4">
-              <button className="flex items-center gap-2 rounded-xl bg-gradient-primary px-6 py-3 font-semibold text-white shadow-glow hover:opacity-95 transition-all">
+              <button onClick={() => toast.info('Feature Coming Soon', { description: 'This module is currently in development.' })}  className="flex items-center gap-2 rounded-xl bg-gradient-primary px-6 py-3 font-semibold text-white shadow-glow hover:opacity-95 transition-all">
                 Review Offer <ArrowRight className="w-4 h-4" />
               </button>
             </div>

@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { toast } from "sonner";
 import { motion } from "framer-motion";
 import { TrendingUp, ArrowUpRight, ArrowDownRight, Activity } from "lucide-react";
 
@@ -30,7 +31,7 @@ function InvestmentsPage() {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.4, delay: 0.1 }}
         >
-          <button className="rounded-xl bg-gradient-primary px-4 py-2 text-sm font-semibold text-white shadow-glow hover:opacity-95 transition-opacity">
+          <button onClick={() => toast.info('Feature Coming Soon', { description: 'This module is currently in development.' })}  className="rounded-xl bg-gradient-primary px-4 py-2 text-sm font-semibold text-white shadow-glow hover:opacity-95 transition-opacity">
             Trade Assets
           </button>
         </motion.div>
@@ -44,7 +45,7 @@ function InvestmentsPage() {
         <p className="text-muted-foreground max-w-sm mb-6">
           Your investment portfolio is currently empty. Start trading assets to grow your wealth.
         </p>
-        <button className="flex items-center gap-2 rounded-xl bg-gradient-primary px-6 py-2.5 text-sm font-semibold text-white shadow-glow hover:opacity-95 transition-opacity">
+        <button onClick={() => toast.info('Feature Coming Soon', { description: 'This module is currently in development.' })}  className="flex items-center gap-2 rounded-xl bg-gradient-primary px-6 py-2.5 text-sm font-semibold text-white shadow-glow hover:opacity-95 transition-opacity">
           Explore Markets
         </button>
       </div>

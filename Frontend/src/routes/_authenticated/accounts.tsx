@@ -89,7 +89,7 @@ function AccountsPage() {
               <div className="flex items-center gap-4 mb-8">
                 <div className="flex-1 rounded-xl bg-white/5 border border-white/10 p-3 font-mono text-sm text-white/80 tracking-widest flex items-center justify-between">
                   {acc.accountNumber}
-                  <button className="text-muted-foreground hover:text-white transition-colors">
+                  <button onClick={() => toast.info('Feature Coming Soon', { description: 'This module is currently in development.' })}  className="text-muted-foreground hover:text-white transition-colors">
                     <Copy className="h-4 w-4" />
                   </button>
                 </div>
@@ -110,10 +110,10 @@ function AccountsPage() {
                   View Details
                 </Link>
                 <div className="flex-1" />
-                <button className="flex items-center gap-2 rounded-lg bg-white/5 px-3 py-2 text-sm font-medium text-white transition-colors hover:bg-white/10 group-hover:text-primary">
+                <button onClick={() => toast.info('Feature Coming Soon', { description: 'This module is currently in development.' })}  className="flex items-center gap-2 rounded-lg bg-white/5 px-3 py-2 text-sm font-medium text-white transition-colors hover:bg-white/10 group-hover:text-primary">
                   <Download className="h-4 w-4" />
                 </button>
-                <button className="flex items-center gap-2 rounded-lg bg-white/5 px-3 py-2 text-sm font-medium text-white transition-colors hover:bg-red-500/20 hover:text-red-400 group-hover:text-red-400/80">
+                <button onClick={() => toast.info('Feature Coming Soon', { description: 'This module is currently in development.' })}  className="flex items-center gap-2 rounded-lg bg-white/5 px-3 py-2 text-sm font-medium text-white transition-colors hover:bg-red-500/20 hover:text-red-400 group-hover:text-red-400/80">
                   <Snowflake className="h-4 w-4" />
                 </button>
               </div>

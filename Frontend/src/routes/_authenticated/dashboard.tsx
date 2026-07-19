@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { toast } from "sonner";
 import { motion } from "framer-motion";
 import {
   ArrowUpRight,
@@ -235,7 +236,7 @@ function DashboardPage() {
                       : "You haven't spent anything yet.")
                   : "Start using your account to receive personalized AI financial insights and recommendations."}
               </p>
-              <button className="text-sm font-semibold text-primary hover:text-primary-light transition-colors">
+              <button onClick={() => toast.info('Feature Coming Soon', { description: 'This module is currently in development.' })}  className="text-sm font-semibold text-primary hover:text-primary-light transition-colors">
                 View detailed analysis &rarr;
               </button>
             </div>

@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { toast } from "sonner";
 import { motion, useMotionValue, useTransform, useSpring } from "framer-motion";
 import { useQuery } from "@tanstack/react-query";
 import { AccountService } from "@/lib/api/services/account.service";
@@ -44,7 +45,7 @@ function CardsPage() {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.4, delay: 0.1 }}
         >
-          <button className="rounded-xl bg-gradient-primary px-4 py-2 text-sm font-semibold text-white shadow-glow hover:opacity-95 transition-opacity">
+          <button onClick={() => toast.info('Feature Coming Soon', { description: 'This module is currently in development.' })}  className="rounded-xl bg-gradient-primary px-4 py-2 text-sm font-semibold text-white shadow-glow hover:opacity-95 transition-opacity">
             + Issue New Card
           </button>
         </motion.div>
@@ -179,7 +180,7 @@ function CardComponent({ card, delay }: { card: any; delay: number }) {
         </div>
 
         <div className="grid grid-cols-4 gap-2 pt-4 border-t border-white/10">
-          <button className="flex flex-col items-center gap-2 p-2 rounded-xl hover:bg-white/5 transition-colors group">
+          <button onClick={() => toast.info('Feature Coming Soon', { description: 'This module is currently in development.' })}  className="flex flex-col items-center gap-2 p-2 rounded-xl hover:bg-white/5 transition-colors group">
             <div className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center group-hover:bg-primary/20 group-hover:border-primary/50 transition-colors">
               <EyeOff className="w-4 h-4 text-muted-foreground group-hover:text-primary" />
             </div>
@@ -188,7 +189,7 @@ function CardComponent({ card, delay }: { card: any; delay: number }) {
             </span>
           </button>
 
-          <button className="flex flex-col items-center gap-2 p-2 rounded-xl hover:bg-white/5 transition-colors group">
+          <button onClick={() => toast.info('Feature Coming Soon', { description: 'This module is currently in development.' })}  className="flex flex-col items-center gap-2 p-2 rounded-xl hover:bg-white/5 transition-colors group">
             <div className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center group-hover:bg-white/10 transition-colors">
               <Lock className="w-4 h-4 text-muted-foreground group-hover:text-white" />
             </div>
@@ -197,7 +198,7 @@ function CardComponent({ card, delay }: { card: any; delay: number }) {
             </span>
           </button>
 
-          <button className="flex flex-col items-center gap-2 p-2 rounded-xl hover:bg-white/5 transition-colors group">
+          <button onClick={() => toast.info('Feature Coming Soon', { description: 'This module is currently in development.' })}  className="flex flex-col items-center gap-2 p-2 rounded-xl hover:bg-white/5 transition-colors group">
             <div className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center group-hover:bg-red-500/20 group-hover:border-red-500/50 transition-colors">
               <Snowflake className="w-4 h-4 text-muted-foreground group-hover:text-red-400" />
             </div>
@@ -206,7 +207,7 @@ function CardComponent({ card, delay }: { card: any; delay: number }) {
             </span>
           </button>
 
-          <button className="flex flex-col items-center gap-2 p-2 rounded-xl hover:bg-white/5 transition-colors group">
+          <button onClick={() => toast.info('Feature Coming Soon', { description: 'This module is currently in development.' })}  className="flex flex-col items-center gap-2 p-2 rounded-xl hover:bg-white/5 transition-colors group">
             <div className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center group-hover:bg-white/10 transition-colors">
               <Settings className="w-4 h-4 text-muted-foreground group-hover:text-white" />
             </div>

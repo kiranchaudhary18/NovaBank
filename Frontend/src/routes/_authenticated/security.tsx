@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { toast } from "sonner";
 import { motion } from "framer-motion";
 import { ShieldCheck, Key, Smartphone, History, ShieldAlert } from "lucide-react";
 
@@ -49,7 +50,7 @@ function SecurityPage() {
                     Enabled
                   </div>
                 </div>
-                <button className="px-4 py-2 rounded-lg bg-white/5 border border-white/10 text-sm font-medium text-white hover:bg-white/10 transition-colors">
+                <button onClick={() => toast.info('Feature Coming Soon', { description: 'This module is currently in development.' })}  className="px-4 py-2 rounded-lg bg-white/5 border border-white/10 text-sm font-medium text-white hover:bg-white/10 transition-colors">
                   Manage 2FA
                 </button>
               </div>
@@ -67,7 +68,7 @@ function SecurityPage() {
                 <p className="text-sm text-muted-foreground mt-1 mb-4">
                   Last changed 3 months ago. We recommend changing it periodically.
                 </p>
-                <button className="px-4 py-2 rounded-lg bg-white/5 border border-white/10 text-sm font-medium text-white hover:bg-white/10 transition-colors">
+                <button onClick={() => toast.info('Feature Coming Soon', { description: 'This module is currently in development.' })}  className="px-4 py-2 rounded-lg bg-white/5 border border-white/10 text-sm font-medium text-white hover:bg-white/10 transition-colors">
                   Change Password
                 </button>
               </div>
@@ -108,7 +109,7 @@ function SecurityPage() {
                     San Jose, CA • Last active 2 hours ago
                   </p>
                 </div>
-                <button className="text-xs font-semibold text-red-400 hover:text-red-300">
+                <button onClick={() => toast.info('Feature Coming Soon', { description: 'This module is currently in development.' })}  className="text-xs font-semibold text-red-400 hover:text-red-300">
                   Revoke
                 </button>
               </div>
@@ -125,7 +126,7 @@ function SecurityPage() {
                 If you notice anything unusual, you can instantly lock your account and freeze all
                 cards.
               </p>
-              <button className="px-4 py-2 rounded-lg bg-red-500/10 border border-red-500/20 text-sm font-medium text-red-400 hover:bg-red-500/20 transition-colors">
+              <button onClick={() => toast.info('Feature Coming Soon', { description: 'This module is currently in development.' })}  className="px-4 py-2 rounded-lg bg-red-500/10 border border-red-500/20 text-sm font-medium text-red-400 hover:bg-red-500/20 transition-colors">
                 Lock Account
               </button>
             </div>
