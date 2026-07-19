@@ -3,6 +3,8 @@ import { motion } from "framer-motion";
 import { AccountService } from "@/lib/api/services/account.service";
 import { useQuery } from "@tanstack/react-query";
 import { Copy, Snowflake, Download, Eye, ArrowRightLeft } from "lucide-react";
+import { Link } from "@tanstack/react-router";
+import { toast } from "sonner";
 
 export const Route = createFileRoute("/_authenticated/accounts")({
   component: AccountsPage,
@@ -12,6 +14,7 @@ function AccountsPage() {
   const { data: accounts = [], isLoading } = useQuery({
     queryKey: ["accounts"],
     queryFn: () => AccountService.getMyAccounts(),
+    staleTime: 5 * 60 * 1000, // 5 minutes cache to prevent constant reloading
   });
 
   if (isLoading) {
@@ -43,7 +46,10 @@ function AccountsPage() {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.4, delay: 0.1 }}
         >
-          <button className="rounded-xl bg-gradient-primary px-4 py-2 text-sm font-semibold text-white shadow-glow hover:opacity-95 transition-opacity">
+          <button 
+            onClick={() => toast("Account Opening", { description: "New account requests must be processed in-branch. Please contact support to initiate the process." })}
+            className="rounded-xl bg-gradient-primary px-4 py-2 text-sm font-semibold text-white shadow-glow hover:opacity-95 transition-opacity"
+          >
             + Open New Account
           </button>
         </motion.div>
@@ -95,14 +101,14 @@ function AccountsPage() {
               </div>
 
               <div className="flex flex-wrap items-center gap-3 pt-6 border-t border-white/10">
-                <button className="flex items-center gap-2 rounded-lg bg-white/5 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-white/10">
+                <Link to="/transfer" className="flex items-center gap-2 rounded-lg bg-white/5 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-white/10">
                   <ArrowRightLeft className="h-4 w-4 text-muted-foreground" />
                   Transfer
-                </button>
-                <button className="flex items-center gap-2 rounded-lg bg-white/5 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-white/10">
+                </Link>
+                <Link to="/transactions" className="flex items-center gap-2 rounded-lg bg-white/5 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-white/10">
                   <Eye className="h-4 w-4 text-muted-foreground" />
                   View Details
-                </button>
+                </Link>
                 <div className="flex-1" />
                 <button className="flex items-center gap-2 rounded-lg bg-white/5 px-3 py-2 text-sm font-medium text-white transition-colors hover:bg-white/10 group-hover:text-primary">
                   <Download className="h-4 w-4" />

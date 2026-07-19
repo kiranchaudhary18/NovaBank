@@ -14,6 +14,7 @@ import { useQuery } from "@tanstack/react-query";
 import { AccountService } from "@/lib/api/services/account.service";
 import { TransactionService } from "@/lib/api/services/transaction.service";
 import { useCurrentUser } from "@/lib/api/hooks/use-auth";
+import { Link } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
   component: DashboardPage,
@@ -85,12 +86,18 @@ function DashboardPage() {
           transition={{ duration: 0.4, delay: 0.1 }}
           className="flex items-center gap-3"
         >
-          <button className="rounded-xl bg-white/5 border border-white/10 px-4 py-2 text-sm font-semibold text-white hover:bg-white/10 transition-colors">
+          <Link 
+            to="/reports"
+            className="rounded-xl bg-white/5 border border-white/10 px-4 py-2 text-sm font-semibold text-white hover:bg-white/10 transition-colors"
+          >
             Download Report
-          </button>
-          <button className="rounded-xl bg-gradient-primary px-4 py-2 text-sm font-semibold text-white shadow-glow hover:opacity-95 transition-opacity">
+          </Link>
+          <Link 
+            to="/transfer"
+            className="rounded-xl bg-gradient-primary px-4 py-2 text-sm font-semibold text-white shadow-glow hover:opacity-95 transition-opacity"
+          >
             Send Money
-          </button>
+          </Link>
         </motion.div>
       </div>
 
@@ -242,9 +249,9 @@ function DashboardPage() {
           >
             <div className="flex items-center justify-between mb-6">
               <h3 className="text-lg font-semibold text-white">Recent Activity</h3>
-              <button className="text-sm text-muted-foreground hover:text-white transition-colors">
+              <Link to="/transactions" className="text-sm text-muted-foreground hover:text-white transition-colors">
                 View All
-              </button>
+              </Link>
             </div>
             <div className="space-y-5">
               {transactions.slice(0, 4).map((tx) => (
