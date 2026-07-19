@@ -21,7 +21,7 @@ export function TopNav() {
 
   const handleLogout = () => {
     AuthService.logout();
-    navigate({ to: "/login" });
+    navigate({ to: "/auth/login" });
   };
 
   const handleSearch = (e: React.KeyboardEvent<HTMLInputElement>) => {
