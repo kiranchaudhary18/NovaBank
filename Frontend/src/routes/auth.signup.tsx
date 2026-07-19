@@ -72,8 +72,9 @@ function SignupPage() {
         password: data.password,
       });
       setEmail(data.email);
-      setStep("otp");
-      toast.success("We sent a 6-digit code to your inbox");
+      setStep("done");
+      setTimeout(() => nav({ to: "/dashboard" }), 1400);
+      toast.success("Account created successfully!");
     } catch {
       toast.error("Signup failed — please try again");
     }
@@ -84,7 +85,7 @@ function SignupPage() {
     try {
       await verify.mutateAsync({ email, code: otp });
       setStep("done");
-      setTimeout(() => nav({ to: "/" }), 1400);
+      setTimeout(() => nav({ to: "/dashboard" }), 1400);
     } catch {
       toast.error("Invalid or expired code");
     }

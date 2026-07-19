@@ -46,7 +46,7 @@ function LoginPage() {
     try {
       await login.mutateAsync(data);
       toast.success("Welcome back to NovaBank");
-      nav({ to: "/" });
+      nav({ to: "/dashboard" });
     } catch {
       toast.error("Invalid credentials");
     }

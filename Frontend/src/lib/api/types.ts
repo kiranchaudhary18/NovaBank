@@ -35,12 +35,14 @@ export interface OtpPayload {
 
 export interface Account {
   id: string;
-  type: "SAVINGS" | "CURRENT" | "FD";
+  name?: string;
+  type: "SAVINGS" | "CURRENT" | "FD" | string;
   accountNumber: string;
   ifsc: string;
   balance: number;
   currency: string;
   frozen: boolean;
+  interestRate?: string;
 }
 
 export interface Transaction {

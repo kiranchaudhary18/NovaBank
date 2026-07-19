@@ -36,7 +36,9 @@ export const tokenStore = {
 // ---------- Request: attach bearer token ----------
 apiClient.interceptors.request.use((config: InternalAxiosRequestConfig) => {
   const token = tokenStore.access;
-  if (token && config.headers) {
+  const isAuthRoute = config.url?.startsWith("/auth/");
+  
+  if (token && config.headers && !isAuthRoute) {
     config.headers.Authorization = `Bearer ${token}`;
   }
   return config;

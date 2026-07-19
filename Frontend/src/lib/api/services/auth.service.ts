@@ -27,9 +27,17 @@ export const AuthService = {
       tokenStore.set(mockTokens.accessToken, mockTokens.refreshToken);
       return { user: { ...mockUser, email: payload.email }, tokens: mockTokens };
     }
-    const { data } = await apiClient.post("/auth/login", payload);
-    tokenStore.set(data.tokens.accessToken, data.tokens.refreshToken);
-    return data;
+    const { data: responseData } = await apiClient.post("/auth/login", payload);
+    const authData = responseData.data;
+    tokenStore.set(authData.token, "");
+    return {
+      user: authData.user,
+      tokens: {
+        accessToken: authData.token,
+        refreshToken: "",
+        expiresIn: authData.expiresIn || 3600,
+      },
+    };
   },
 
   async signup(payload: SignupPayload): Promise<{ user: User }> {
@@ -37,8 +45,15 @@ export const AuthService = {
       await wait(900);
       return { user: { ...mockUser, ...payload } };
     }
-    const { data } = await apiClient.post("/auth/signup", payload);
-    return data;
+    const { data: responseData } = await apiClient.post("/auth/register", {
+      fullName: payload.fullName,
+      email: payload.email,
+      password: payload.password,
+      phone: "+12345678900", // Default phone number since UI does not collect it
+    });
+    const authData = responseData.data;
+    tokenStore.set(authData.token, "");
+    return { user: authData.user };
   },
 
   async verifyOtp(payload: OtpPayload): Promise<{ tokens: AuthTokens }> {
@@ -63,12 +78,8 @@ export const AuthService = {
   },
 
   async me(): Promise<User> {
-    if (API_CONFIG.useMocks) {
-      await wait(200);
-      return mockUser;
-    }
     const { data } = await apiClient.get("/auth/me");
-    return data;
+    return data.data;
   },
 
   logout() {
