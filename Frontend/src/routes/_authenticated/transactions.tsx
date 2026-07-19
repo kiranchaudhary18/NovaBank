@@ -5,6 +5,8 @@ import { Search, Download, Filter, FileText } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { AccountService } from "@/lib/api/services/account.service";
 import { TransactionService } from "@/lib/api/services/transaction.service";
+import jsPDF from "jspdf";
+import autoTable from "jspdf-autotable";
 import {
   Table,
   TableBody,
@@ -33,6 +35,60 @@ function TransactionsPage() {
     enabled: !!primaryAccount,
   });
 
+  const exportCSV = () => {
+    if (!transactions.length) {
+      toast.error("No transactions to export");
+      return;
+    }
+    const headers = ["Description", "Category", "Date", "Status", "Amount", "Type"];
+    const csvContent = [
+      headers.join(","),
+      ...transactions.map(tx => {
+        const date = new Date(tx.createdAt).toLocaleDateString("en-US");
+        return `"${tx.merchant}","${tx.category}","${date}","${tx.status}","${tx.amount}","${tx.type}"`;
+      })
+    ].join("\n");
+
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const link = document.createElement("a");
+    const url = URL.createObjectURL(blob);
+    link.setAttribute("href", url);
+    link.setAttribute("download", "transactions_export.csv");
+    link.style.visibility = "hidden";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    toast.success("CSV exported successfully");
+  };
+
+  const exportPDF = () => {
+    if (!transactions.length) {
+      toast.error("No transactions to export");
+      return;
+    }
+    const doc = new jsPDF();
+    doc.text("Transactions Report", 14, 15);
+    
+    const tableColumn = ["Description", "Category", "Date", "Status", "Amount", "Type"];
+    const tableRows = transactions.map(tx => [
+      tx.merchant,
+      tx.category,
+      new Date(tx.createdAt).toLocaleDateString("en-US"),
+      tx.status,
+      tx.amount.toString(),
+      tx.type
+    ]);
+
+    autoTable(doc, {
+      head: [tableColumn],
+      body: tableRows,
+      startY: 20,
+    });
+    
+    doc.save("transactions_export.pdf");
+    toast.success("PDF exported successfully");
+  };
+
   return (
     <div className="p-6 lg:p-8 max-w-7xl mx-auto space-y-8">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
@@ -55,11 +111,11 @@ function TransactionsPage() {
           transition={{ duration: 0.4, delay: 0.1 }}
           className="flex items-center gap-3"
         >
-          <button onClick={() => toast.info('Feature Coming Soon', { description: 'This module is currently in development.' })}  className="flex items-center gap-2 rounded-xl bg-white/5 border border-white/10 px-4 py-2 text-sm font-semibold text-white hover:bg-white/10 transition-colors">
+          <button onClick={exportCSV} className="flex items-center gap-2 rounded-xl bg-white/5 border border-white/10 px-4 py-2 text-sm font-semibold text-white hover:bg-white/10 transition-colors">
             <Download className="h-4 w-4" />
             Export CSV
           </button>
-          <button onClick={() => toast.info('Feature Coming Soon', { description: 'This module is currently in development.' })}  className="flex items-center gap-2 rounded-xl bg-white/5 border border-white/10 px-4 py-2 text-sm font-semibold text-white hover:bg-white/10 transition-colors">
+          <button onClick={exportPDF} className="flex items-center gap-2 rounded-xl bg-white/5 border border-white/10 px-4 py-2 text-sm font-semibold text-white hover:bg-white/10 transition-colors">
             <FileText className="h-4 w-4" />
             Export PDF
           </button>
